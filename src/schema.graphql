@@ -1,0 +1,95 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Auth {
+  """JWT access token"""
+  accessToken: JWT!
+
+  """JWT refresh token"""
+  refreshToken: JWT!
+  user: User!
+}
+
+input ChangePasswordInput {
+  newPassword: String!
+  oldPassword: String!
+}
+
+input CreateRewardInput {
+  rewardCode: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+"""
+A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
+"""
+scalar JWT
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  changePassword(data: ChangePasswordInput!): User!
+  generateRewardCode(data: CreateRewardInput!): Reward!
+  login(data: LoginInput!): Auth!
+  signup(data: SignupInput!): Auth!
+  updateUser(data: UpdateUserInput!): User!
+}
+
+type Query {
+  reward: Reward!
+  userRewards: [Reward!]!
+}
+
+type Reward {
+  author: User
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  published: Boolean!
+  rewardCode: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+input SignupInput {
+  city: String
+  email: String!
+  name: String
+  password: String!
+  photo: String
+}
+
+type Subscription {
+  rewardCodeCreated: Reward!
+}
+
+input UpdateUserInput {
+  city: String
+  name: String
+  photo: String
+}
+
+type User {
+  city: String
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  email: String!
+  id: ID!
+  name: String
+  photo: String
+  rewards: [Reward!]
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
