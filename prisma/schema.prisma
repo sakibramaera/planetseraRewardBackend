@@ -20,7 +20,7 @@ model User {
   password  String
   name      String?
   city      String?
-  photo     String
+  photo     String?
   rewards   Reward[]
 }
 

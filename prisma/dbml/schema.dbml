@@ -10,7 +10,7 @@ Table User {
   password String [not null]
   name String
   city String
-  photo String [not null]
+  photo String
   rewards Reward [not null]
 }
 
