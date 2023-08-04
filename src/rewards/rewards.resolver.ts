@@ -8,6 +8,8 @@ import {
   Subscription,
   Mutation,
 } from '@nestjs/graphql';
+
+
 import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 import { PubSub } from 'graphql-subscriptions';
 import { UseGuards } from '@nestjs/common';
@@ -19,7 +21,7 @@ import { RewardIdArgs } from './args/reward-id.args';
 import { UserIdArgs } from './args/user-id.args';
 import { Reward } from './models/reward.model';
 import { RewardConnection } from './models/reward-connection.model';
-import { RewardOrder } from './dto/post-order.input';
+import { RewardOrder } from './dto/reward-order.input';
 import { CreateRewardInput } from './dto/createReward.input';
 
 const pubSub = new PubSub();
@@ -35,10 +37,12 @@ export class RewardsResolver {
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Reward)
-  async generateRewardCode(
+  async setRewardCode(
     @UserEntity() user: User,
     @Args('data') data: CreateRewardInput,
   ) {
+
+
     const newReward = this.prisma.reward.create({
       data: {
         rewardCode: data.rewardCode,
@@ -47,6 +51,7 @@ export class RewardsResolver {
     });
     pubSub.publish('rewardCodeCreated', { rewardCodeCreated: newReward });
     return newReward;
+
   }
 
   // @Query(() => RewardConnection)
@@ -84,26 +89,19 @@ export class RewardsResolver {
 
   @Query(() => [Reward])
   userRewards(@Args() id: UserIdArgs) {
-    return this.prisma.user
+    const result = this.prisma.user
       .findUnique({ where: { id: id.userId } })
-      
+    return result;
 
-    // or
-    // return this.prisma.Rewards.findMany({
-    //   where: {
-    //     published: true,
-    //     author: { id: id.userId }
-    //   }
-    // });
   }
 
-  @Query(() => Reward)
+  // @Query(() => Reward)
   async reward(@Args() id: RewardIdArgs) {
     return this.prisma.reward.findUnique({ where: { id: id.rewardId } });
   }
 
-  @ResolveField('author', () => User)
-  async author(@Parent() reward: Reward) {
-    return this.prisma.reward.findUnique({ where: { id: reward.id } }).author();
-  }
+  // @ResolveField('author', () => User)
+  // async author(@Parent() reward: Reward) {
+  //   return this.prisma.reward.findUnique({ where: { id: reward.id } }).author();
+  // }
 }

@@ -37,24 +37,21 @@ input LoginInput {
 
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
-  generateRewardCode(data: CreateRewardInput!): Reward!
   login(data: LoginInput!): Auth!
+  setRewardCode(data: CreateRewardInput!): Reward!
   signup(data: SignupInput!): Auth!
   updateUser(data: UpdateUserInput!): User!
 }
 
 type Query {
-  reward: Reward!
+  me: User!
   userRewards: [Reward!]!
 }
 
 type Reward {
-  author: User
-
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
   id: ID!
-  published: Boolean!
   rewardCode: String!
 
   """Identifies the date and time when the object was last updated."""

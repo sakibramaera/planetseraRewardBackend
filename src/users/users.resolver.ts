@@ -23,7 +23,7 @@ export class UsersResolver {
     private prisma: PrismaService,
   ) {}
 
-  // @Query(() => User)
+  @Query(() => User)
   async me(@UserEntity() user: User): Promise<User> {
     return user;
   }

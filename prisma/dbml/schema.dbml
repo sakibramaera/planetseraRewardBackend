@@ -17,7 +17,7 @@ Table User {
 Table Reward {
   id String [pk]
   createdAt DateTime [default: `now()`, not null]
-  rewardCode String [not null]
+  rewardCode String [unique, not null]
   author User
   authorId String
 }

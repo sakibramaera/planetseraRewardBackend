@@ -27,8 +27,7 @@ model User {
 model Reward {
   id         String   @id @default(cuid())
   createdAt  DateTime @default(now())
-  // updatedAt  DateTime @updatedAt
-  rewardCode String
+  rewardCode String   @unique
   author     User?    @relation(fields: [authorId], references: [id])
   authorId   String?
 }
